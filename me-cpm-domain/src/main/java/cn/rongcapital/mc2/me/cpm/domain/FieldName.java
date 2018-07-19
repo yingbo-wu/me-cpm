@@ -10,10 +10,10 @@ public interface FieldName {
 	String FIELD_DIAGRAM = "diagram";
 	String FIELD_NODES = "nodes";
 	String FIELD_LINES = "lines";
-	String FIELD_BIZ_TIME_TYPE = "biz_date_type";
+	String FIELD_BIZ_DATE_FLAG = "biz_date_flag";
 	String FIELD_BIZ_DATE_RANGE = "biz_date_range";
-	String FIELD_SATRT_TIME = "satrt_time";
-	String FIELD_END_TIME = "end_time";
+	String FIELD_SATRT = "satrt";
+	String FIELD_END = "end";
 	String FIELD_STARTUP_POLICY = "startup_policy";
 	String FIELD_SHUTDOWN_POLICY = "shutdown_policy";
 	String FIELD_IS_DELETED = "is_deleted";

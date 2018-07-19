@@ -21,7 +21,6 @@ public class CampaignDiagramService extends IgniteService implements CampaignDia
 	/**
 	 * 保存活动编排图
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public ApiResult<Void> save(CampaignDiagramSaveIn in) {
 		// 活动id
@@ -38,7 +37,8 @@ public class CampaignDiagramService extends IgniteService implements CampaignDia
 			campaignDiagramSaveService.save(id, tenantId, userId, userName, diagramJson);
 			return ApiResult.success();
 		} catch (ApiException e) {
-			return e.result();
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 

@@ -21,7 +21,15 @@ public class CampaignNodeComponent {
 
 	public CampaignNodeComponent(String faasName, String faasVersion, String token, Map<String, Object> data) {
 		this.data = data;
-		this.principal = new CampaignNodePrincipal(faasName, faasVersion, token);
+		if (null == token) {
+			this.principal = new CampaignNodePrincipal(faasName, faasVersion);
+		} else {
+			this.principal = new CampaignNodePrincipal(faasName, faasVersion, token);
+		}
+	}
+
+	public CampaignNodeComponent(String faasName, String faasVersion, Map<String, Object> data) {
+		this(faasName, faasVersion, null, data);
 	}
 
 	/**

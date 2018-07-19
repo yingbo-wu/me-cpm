@@ -55,7 +55,11 @@ public class CampaignNode {
 		data.remove("expiredInterval");
 		data.remove("expiredTime");
 		this.setting = new CampaignNodeSetting(errorHandle, delayMode, delayInterval, expireInterval);
-		this.component = new CampaignNodeComponent(faasName, faasVersion, token, data);
+		if (null == token) {
+			this.component = new CampaignNodeComponent(faasName, faasVersion, data);
+		} else {
+			this.component = new CampaignNodeComponent(faasName, faasVersion, token, data);
+		}
 
 		CampaignNodeType typeEnum = CampaignNodeType.valueOf(type);
 		if (CampaignNodeType.START.equals(typeEnum)) {
@@ -74,6 +78,10 @@ public class CampaignNode {
 				// TODO
 			}
 		}
+	}
+
+	public CampaignNode(long tenantId, Map<String, Object> node, List<Map<String, Object>> incomings, List<Map<String, Object>> outcomings) {
+		this(tenantId, null, node, incomings, outcomings);
 	}
 
 	/**

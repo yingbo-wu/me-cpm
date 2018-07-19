@@ -14,11 +14,11 @@ public class CampaignFindOut implements ApiOut {
 
 	private Integer status;
 
-	private Integer bizTimeFlag;
+	private Integer bizDateFlag;
 
-	private Date bizStartTime;
+	private Date bizStartDate;
 
-	private Date bizEndTime;
+	private Date bizEndDate;
 
 	private Date startupTime;
 
@@ -88,28 +88,28 @@ public class CampaignFindOut implements ApiOut {
 		this.status = status;
 	}
 
-	public Integer getBizTimeFlag() {
-		return bizTimeFlag;
+	public Integer getBizDateFlag() {
+		return bizDateFlag;
 	}
 
-	public void setBizTimeFlag(Integer bizTimeFlag) {
-		this.bizTimeFlag = bizTimeFlag;
+	public void setBizDateFlag(Integer bizDateFlag) {
+		this.bizDateFlag = bizDateFlag;
 	}
 
-	public Date getBizStartTime() {
-		return bizStartTime;
+	public Date getBizStartDate() {
+		return bizStartDate;
 	}
 
-	public void setBizStartTime(Date bizStartTime) {
-		this.bizStartTime = bizStartTime;
+	public void setBizStartDate(Date bizStartDate) {
+		this.bizStartDate = bizStartDate;
 	}
 
-	public Date getBizEndTime() {
-		return bizEndTime;
+	public Date getBizEndDate() {
+		return bizEndDate;
 	}
 
-	public void setBizEndTime(Date bizEndTime) {
-		this.bizEndTime = bizEndTime;
+	public void setBizEndDate(Date bizEndDate) {
+		this.bizEndDate = bizEndDate;
 	}
 
 	public Date getStartupTime() {

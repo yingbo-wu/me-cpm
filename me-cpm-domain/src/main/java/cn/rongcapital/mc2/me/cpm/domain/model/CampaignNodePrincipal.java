@@ -27,4 +27,10 @@ public class CampaignNodePrincipal {
 		this.uid = PropertyContext.build().getProperty("TODO");
 	}
 
+	public CampaignNodePrincipal(String name, String version) {
+		this.name = name;
+		this.version = version;
+		this.uid = PropertyContext.build().getProperty("TODO");
+	}
+
 }

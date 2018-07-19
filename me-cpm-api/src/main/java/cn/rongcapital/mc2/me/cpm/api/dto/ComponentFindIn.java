@@ -6,7 +6,7 @@ import cn.rongcapital.mc2.me.commons.api.ApiIn;
 
 public class ComponentFindIn implements ApiIn {
 
-	@NotNull(message = "4001")
+	@NotNull(message = "4401")
 	private Long tenantId;
 
 	public Long getTenantId() {

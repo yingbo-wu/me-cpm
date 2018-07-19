@@ -8,10 +8,10 @@ import cn.rongcapital.mc2.me.commons.api.ApiIn;
 
 public class CampaignFindOneIn implements ApiIn {
 
-	@NotBlank(message = "4000")
+	@NotBlank(message = "4001")
 	private String id;
 
-	@NotNull(message = "4001")
+	@NotNull(message = "4401")
 	private Long tenantId;
 
 	public String getId() {

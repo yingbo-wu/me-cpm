@@ -6,15 +6,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import cn.rongcapital.mc2.me.cpm.domain.FieldName;
 
 public class CampaignDiagram {
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_NODES)
 	private List<Map<String, Object>> nodes;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_LINES)
 	private List<Map<String, Object>> lines;
 
@@ -42,6 +45,21 @@ public class CampaignDiagram {
 				return nodeId.equals(startId);
 			}).collect(Collectors.toList());
 			return new CampaignNode(tenantId, token, node, incomings, outcomings);
+		}).collect(Collectors.toList());
+	}
+
+	public List<CampaignNode> parseNodes(long tenantId) {
+		return this.nodes.stream().map(node -> {
+			String nodeId = (String) node.get("id");
+			List<Map<String, Object>> incomings = this.lines.stream().filter(line -> {
+				String endId = (String) line.get("end");
+				return nodeId.equals(endId);
+			}).collect(Collectors.toList());
+			List<Map<String, Object>> outcomings = this.lines.stream().filter(line -> {
+				String startId = (String) line.get("start");
+				return nodeId.equals(startId);
+			}).collect(Collectors.toList());
+			return new CampaignNode(tenantId, node, incomings, outcomings);
 		}).collect(Collectors.toList());
 	}
 

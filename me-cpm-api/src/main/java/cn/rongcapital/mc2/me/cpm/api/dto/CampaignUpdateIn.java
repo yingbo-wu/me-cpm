@@ -12,11 +12,6 @@ public class CampaignUpdateIn implements ApiIn {
 	@NotNull(message = "4001")
 	private String id;
 
-	@NotNull(message = "4009")
-	private Long userId;
-
-	private String userName;
-
 	@NotEmpty(message = "4002")
 	@Length(min = 1, max = 15, message = "4003")
 	private String name;
@@ -25,14 +20,20 @@ public class CampaignUpdateIn implements ApiIn {
 	private String description;
 
 	@NotNull(message = "4005")
+	private Integer bizDateFlag;
+	
+	private Long bizStartDate;
+
+	private Long bizEndDate;
+
+	@NotNull(message = "4401")
 	private Long tenantId;
 
-	@NotNull(message = "4006")
-	private Integer bizTimeFlag;
+	@NotNull(message = "4402")
+	private Long userId;
 
-	private Long bizStartTime;
-
-	private Long bizEndTime;
+	@NotNull(message = "4403")
+	private String userName;
 
 	public String getId() {
 		return id;
@@ -40,22 +41,6 @@ public class CampaignUpdateIn implements ApiIn {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getName() {
@@ -74,6 +59,30 @@ public class CampaignUpdateIn implements ApiIn {
 		this.description = description;
 	}
 
+	public Integer getBizDateFlag() {
+		return bizDateFlag;
+	}
+
+	public void setBizDateFlag(Integer bizDateFlag) {
+		this.bizDateFlag = bizDateFlag;
+	}
+
+	public Long getBizStartDate() {
+		return bizStartDate;
+	}
+
+	public void setBizStartDate(Long bizStartDate) {
+		this.bizStartDate = bizStartDate;
+	}
+
+	public Long getBizEndDate() {
+		return bizEndDate;
+	}
+
+	public void setBizEndDate(Long bizEndDate) {
+		this.bizEndDate = bizEndDate;
+	}
+
 	public Long getTenantId() {
 		return tenantId;
 	}
@@ -82,28 +91,20 @@ public class CampaignUpdateIn implements ApiIn {
 		this.tenantId = tenantId;
 	}
 
-	public Integer getBizTimeFlag() {
-		return bizTimeFlag;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setBizTimeFlag(Integer bizTimeFlag) {
-		this.bizTimeFlag = bizTimeFlag;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public Long getBizStartTime() {
-		return bizStartTime;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setBizStartTime(Long bizStartTime) {
-		this.bizStartTime = bizStartTime;
-	}
-
-	public Long getBizEndTime() {
-		return bizEndTime;
-	}
-
-	public void setBizEndTime(Long bizEndTime) {
-		this.bizEndTime = bizEndTime;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }

@@ -9,12 +9,6 @@ import cn.rongcapital.mc2.me.commons.api.ApiIn;
 
 public class CampaignPagingIn implements ApiIn {
 
-	@NotNull(message = "4001")
-	private Long tenantId;
-
-	@NotNull(message = "4002")
-	private Long userId;
-
 	private String name;
 
 	private List<Integer> status;
@@ -29,21 +23,11 @@ public class CampaignPagingIn implements ApiIn {
 
 	private Integer pageSize;
 
-	public Long getTenantId() {
-		return tenantId;
-	}
+	@NotNull(message = "4401")
+	private Long tenantId;
 
-	public void setTenantId(Long tenantId) {
-		this.tenantId = tenantId;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+	@NotNull(message = "4402")
+	private Long userId;
 
 	public String getName() {
 		return name;
@@ -99,6 +83,22 @@ public class CampaignPagingIn implements ApiIn {
 
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public Long getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Long tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }

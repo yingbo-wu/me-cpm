@@ -10,14 +10,6 @@ import cn.rongcapital.mc2.me.commons.api.ApiIn;
 
 public class CampaignCreateForCdpIn implements ApiIn {
 
-	@NotNull(message = "4004")
-	private Long tenantId;
-
-	@NotNull(message = "4008")
-	private Long userId;
-
-	private String userName;
-
 	@NotEmpty(message = "4001")
 	@Length(min = 1, max = 15, message = "4002")
 	private String name;
@@ -25,15 +17,72 @@ public class CampaignCreateForCdpIn implements ApiIn {
 	@Length(min = 0, max = 100, message = "4003")
 	private String description;
 
-	@NotNull(message = "4005")
-	private Integer bizTimeFlag;
+	@NotNull(message = "4004")
+	private Integer bizDateFlag;
+	
+	private Long bizStartDate;
 
-	private Long bizStartTime;
+	private Long bizEndDate;
 
-	private Long bizEndTime;
-
-	@NotBlank(message = "4009")
+	@NotBlank(message = "4005")
 	private String dataJson;
+
+	@NotNull(message = "4401")
+	private Long tenantId;
+
+	@NotNull(message = "4402")
+	private Long userId;
+
+	@NotEmpty(message = "4403")
+	private String userName;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getBizDateFlag() {
+		return bizDateFlag;
+	}
+
+	public void setBizDateFlag(Integer bizDateFlag) {
+		this.bizDateFlag = bizDateFlag;
+	}
+
+	public Long getBizStartDate() {
+		return bizStartDate;
+	}
+
+	public void setBizStartDate(Long bizStartDate) {
+		this.bizStartDate = bizStartDate;
+	}
+
+	public Long getBizEndDate() {
+		return bizEndDate;
+	}
+
+	public void setBizEndDate(Long bizEndDate) {
+		this.bizEndDate = bizEndDate;
+	}
+
+	public String getDataJson() {
+		return dataJson;
+	}
+
+	public void setDataJson(String dataJson) {
+		this.dataJson = dataJson;
+	}
 
 	public Long getTenantId() {
 		return tenantId;
@@ -57,54 +106,6 @@ public class CampaignCreateForCdpIn implements ApiIn {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getBizTimeFlag() {
-		return bizTimeFlag;
-	}
-
-	public void setBizTimeFlag(Integer bizTimeFlag) {
-		this.bizTimeFlag = bizTimeFlag;
-	}
-
-	public Long getBizStartTime() {
-		return bizStartTime;
-	}
-
-	public void setBizStartTime(Long bizStartTime) {
-		this.bizStartTime = bizStartTime;
-	}
-
-	public Long getBizEndTime() {
-		return bizEndTime;
-	}
-
-	public void setBizEndTime(Long bizEndTime) {
-		this.bizEndTime = bizEndTime;
-	}
-
-	public String getDataJson() {
-		return dataJson;
-	}
-
-	public void setDataJson(String dataJson) {
-		this.dataJson = dataJson;
 	}
 
 }

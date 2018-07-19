@@ -64,14 +64,15 @@ public class CampaignService extends IgniteService implements CampaignApi {
 		String userName = in.getUserName();
 		String name = in.getName();
 		String description = in.getDescription();
-		int bizTimeFlag = in.getBizTimeFlag();
-		Date bizStartTime = new Date(in.getBizStartTime());
-		Date bizEndTime = new Date(in.getBizEndTime());
+		int bizDateFlag = in.getBizDateFlag();
+		Long bizStartDate = in.getBizStartDate();
+		Long bizEndDate = in.getBizEndDate();
 		try {
-			String id = campaignCreateService.create(tenantId, userId, name, userName, description, bizTimeFlag, bizStartTime, bizEndTime);
+			String id = campaignCreateService.create(tenantId, userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate);
 			return ApiResult.success(id);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -85,15 +86,16 @@ public class CampaignService extends IgniteService implements CampaignApi {
 		String userName = in.getUserName();
 		String name = in.getName();
 		String description = in.getDescription();
-		int bizTimeFlag = in.getBizTimeFlag();
-		Date bizStartTime = new Date(in.getBizStartTime());
-		Date bizEndTime = new Date(in.getBizEndTime());
+		int bizDateFlag = in.getBizDateFlag();
+		Long bizStartDate = in.getBizStartDate();
+		Long bizEndDate = in.getBizEndDate();
 		String dataJson = in.getDataJson();
 		try {
-			String id = campaignCreateService.create(tenantId, userId, userName, name, description, bizTimeFlag, bizStartTime, bizEndTime, dataJson);
+			String id = campaignCreateService.create(tenantId, userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate, dataJson);
 			return ApiResult.success(id);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -110,7 +112,8 @@ public class CampaignService extends IgniteService implements CampaignApi {
 		} catch (ApiException e) {
 			return e.result();
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -121,14 +124,15 @@ public class CampaignService extends IgniteService implements CampaignApi {
 		String userName = in.getUserName();
 		String name = in.getName();
 		String description = in.getDescription();
-		int bizTimeFlag = in.getBizTimeFlag();
-		Date bizStartTime = new Date(in.getBizStartTime());
-		Date bizEndTime = new Date(in.getBizEndTime());
+		int bizDateFlag = in.getBizDateFlag();
+		Long bizStartDate = in.getBizStartDate();
+		Long bizEndDate = in.getBizEndDate();
 		try {
-			campaignUpdateService.update(id, userId, userName, name, description, bizTimeFlag, bizStartTime, bizEndTime);
+			campaignUpdateService.update(id, userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate);
 			return ApiResult.success(id);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -145,7 +149,8 @@ public class CampaignService extends IgniteService implements CampaignApi {
 			long total = campaignTotalService.total(tenantId, userId, name, status, isOwn, fromDate, toDate);
 			return ApiResult.success(total);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -165,7 +170,8 @@ public class CampaignService extends IgniteService implements CampaignApi {
 			List<CampaignFindOut> outList = list.stream().map(campaign -> campaign.toFindOut(CampaignFindOut.class)).collect(Collectors.toList());
 			return ApiResult.success(outList);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -178,7 +184,8 @@ public class CampaignService extends IgniteService implements CampaignApi {
 			CampaignFindOneOut out = campaign.toFindOneOut(CampaignFindOneOut.class);
 			return ApiResult.success(out);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -200,7 +207,8 @@ public class CampaignService extends IgniteService implements CampaignApi {
 			CampaignPagingOut out = new CampaignPagingOut(total, findList);
 			return ApiResult.success(out);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 
@@ -213,7 +221,8 @@ public class CampaignService extends IgniteService implements CampaignApi {
 			boolean available = campaignCheckService.checkName(id, tenantId, name);
 			return ApiResult.success(available);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 

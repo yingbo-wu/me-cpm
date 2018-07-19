@@ -7,14 +7,14 @@ import cn.rongcapital.mc2.me.cpm.domain.model.Campaign;
 import cn.rongcapital.mc2.me.cpm.domain.repository.CampaignRepository;
 
 @Service
-public class CampaignUpdateService {
+public class CampaignFlowShutdownService {
 
 	@Autowired
 	private CampaignRepository campaignRepository;
 
-	public void update(String id, long userId, String userName, String name, String description, int bizDateFlag, Long bizStartDate, Long bizEndDate) {
+	public void shutdown(String id, long tenantId, long userId, String userName, Integer shutdownOption) {
 		Campaign campaign = campaignRepository.findOne(id);
-		campaign.modifyDraftBy(userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate);
+		campaign.terminate(tenantId, userId, userName, shutdownOption);
 	}
 
 }

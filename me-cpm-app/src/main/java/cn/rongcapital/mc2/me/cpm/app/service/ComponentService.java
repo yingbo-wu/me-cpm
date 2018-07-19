@@ -30,7 +30,8 @@ public class ComponentService extends IgniteService implements ComponentApi {
 			List<ComponentFindOut> outList = list.stream().map(component -> component.toFindOut(ComponentFindOut.class)).collect(Collectors.toList());
 			return ApiResult.success(outList);
 		} catch (Exception e) {
-			return ApiResult.error(5000);
+			e.printStackTrace();
+			return ApiResult.error(5000, e.getMessage());
 		}
 	}
 

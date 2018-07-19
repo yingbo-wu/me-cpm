@@ -8,15 +8,16 @@ import cn.rongcapital.mc2.me.commons.api.ApiIn;
 
 public class CampaignDeleteIn implements ApiIn {
 
-	@NotBlank(message = "4003")
+	@NotBlank(message = "4001")
 	private String id;
 
-	@NotNull(message = "4001")
+	@NotNull(message = "4401")
 	private Long tenantId;
 
-	@NotNull(message = "4002")
+	@NotNull(message = "4402")
 	private Long userId;
 
+	@NotNull(message = "4403")
 	private String userName;
 
 	public String getId() {

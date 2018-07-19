@@ -12,13 +12,13 @@ public class CampaignNameCheckIn implements ApiIn {
 
 	private String id;
 
-	@NotNull(message = "4000")
-	private Long tenantId;
-
 	@NotBlank(message = "4001")
 	@Pattern(regexp = "[\u4e00-\u9fa5A-Za-z0-9]*", message = "4002")
 	@Length(min = 0, max = 30, message = "4003")
 	private String name;
+
+	@NotNull(message = "4401")
+	private Long tenantId;
 
 	public String getId() {
 		return id;
@@ -28,20 +28,20 @@ public class CampaignNameCheckIn implements ApiIn {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(Long tenantId) {
-		this.tenantId = tenantId;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Long tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }

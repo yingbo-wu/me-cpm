@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,69 +18,86 @@ import cn.rongcapital.mc2.me.commons.infrastructure.reactor.ReactorNettyResult;
 import cn.rongcapital.mc2.me.commons.util.GsonUtils;
 import cn.rongcapital.mc2.me.cpm.domain.FieldName;
 
+@SuppressWarnings("serial")
 @Document(collection = "campaign")
 public class Campaign extends IgniteEntity {
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_TENANT_ID)
 	private long tenantId;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_NAME)
 	private String name;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_DESCRIPTION)
 	private String description;
 
-	@Field(FieldName.FIELD_BIZ_TIME_TYPE)
-	private int bizTimeFlag;
+	@QuerySqlField
+	@Field(FieldName.FIELD_BIZ_DATE_FLAG)
+	private int bizDateFlag;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_BIZ_DATE_RANGE)
 	private CampaignBizDateRange bizDateRange;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_DIAGRAM)
 	private CampaignDiagram diagram;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_STARTUP_POLICY)
 	private CampaignStartupPolicy startupPolicy;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_SHUTDOWN_POLICY)
 	private CampaignShutdownPolicy shutdownPolicy;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_IS_DELETED)
 	private boolean isDeleted;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_CREATE_OPERATION)
 	private CampaignOperation createOperation;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_MODIFY_OPERATION)
 	private CampaignOperation modifyOperation;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_UPDATE_OPERATION)
 	private CampaignOperation updateOperation;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_DELETE_OPERATION)
 	private CampaignOperation deleteOperation;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_PUBLISH_OPERATION)
 	private CampaignOperation publishOperation;
 
+	@QuerySqlField
 	@Field(FieldName.FIELD_TERMINATE_OPERATION)
 	private CampaignOperation terminateOperation;
 
 	public Campaign() {}
 
-	public Campaign(long tenantId, long userId, String userName, String name, String description, int bizTimeFlag, Date bizStartTime, Date bizEndTime) {
+	public Campaign(long tenantId, long userId, String userName, String name, String description, int bizDateFlag, Long bizStartDate, Long bizEndDate) {
+		this.status = CampaignStatus.DRAFT;
 		this.tenantId = tenantId;
 		this.name = name;
 		this.description = description;
-		this.bizTimeFlag = bizTimeFlag;
-		this.bizDateRange = new CampaignBizDateRange(bizStartTime, bizEndTime);
+		this.bizDateFlag = bizDateFlag;
+		this.bizDateRange = new CampaignBizDateRange(bizStartDate, bizEndDate);
 		this.createBy = userId;
 		this.createAt = new Date();
 		this.createOperation = new CampaignOperation(this.createAt, userId, userName);
 	}
 
-	public Campaign(long tenantId, long userId, String userName, String name, String description, int bizTimeFlag, Date bizStartTime, Date bizEndTime, Map<String, Object> node) {
-		this(tenantId, userId, userName, name, description, bizTimeFlag, bizStartTime, bizEndTime);
+	public Campaign(long tenantId, long userId, String userName, String name, String description, int bizDateFlag, Long bizStartDate, Long bizEndDate, Map<String, Object> node) {
+		this(tenantId, userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate);
 		this.diagram = new CampaignDiagram(node);
 	}
 
@@ -116,14 +134,14 @@ public class Campaign extends IgniteEntity {
 	 * @param bizStartTime
 	 * @param bizEndTime
 	 */
-	public void modifyDraftBy(long userId, String userName, String name, String description, int bizTimeFlag, Date bizStartTime, Date bizEndTime) {
+	public void modifyDraftBy(long userId, String userName, String name, String description, int bizDateFlag, Long bizStartDate, Long bizEndDate) {
 		this.updateBy = userId;
 		this.updateAt = new Date();
 		this.name = name;
 		this.description = description;
-		this.bizTimeFlag = bizTimeFlag;
-		this.bizDateRange.resetStartTime(bizStartTime);
-		this.bizDateRange.resetEndTime(bizEndTime);
+		this.bizDateFlag = bizDateFlag;
+		this.bizDateRange.resetStart(bizStartDate);
+		this.bizDateRange.resetEnd(bizEndDate);
 		this.modifyOperation = new CampaignOperation(this.updateAt, userId, userName);
 		this.updateOperation = new CampaignOperation(this.updateAt, userId, userName);
 	}
@@ -143,15 +161,24 @@ public class Campaign extends IgniteEntity {
 
 	/**
 	 * 发布流程
+	 * @param tenantId 
 	 * @param userId
 	 * @param userName
-	 * @param token
+	 * @param userToken
+	 * @param shutdownOption 
+	 * @param shutdownTime 
+	 * @param shutdownMode 
+	 * @param startupTime 
+	 * @param startupMode 
 	 */
-	public CampaignFlow publish(long tenantId, long userId, String userName, String token) {
+	public CampaignFlow publish(long tenantId, long userId, String userName, String userToken, Integer startupMode, Long startupTime, Integer shutdownMode, Long shutdownTime, Integer shutdownOption) {
+		if (tenantId != this.tenantId) {
+			// TODO
+		}
 		// 检查活动
 		this.checkValidity();
 		// 解析流程图
-		List<CampaignNode> nodes = diagram.parseNodes(tenantId, token);
+		List<CampaignNode> nodes = diagram.parseNodes(this.tenantId, userToken);
 		// 预发布
 		long count = nodes.stream().map(node -> {
 			return node.prePublish();
@@ -164,6 +191,8 @@ public class Campaign extends IgniteEntity {
 				this.updateAt = new Date();
 				this.updateBy = userId;
 				this.publishOperation = new CampaignOperation(this.updateAt, userId, userName);
+				this.startupPolicy = new CampaignStartupPolicy(startupMode, startupTime);
+				this.shutdownPolicy = new CampaignShutdownPolicy(shutdownMode, shutdownTime, shutdownOption);
 				return new CampaignFlow(this.id, this.tenantId, this.startupPolicy, this.shutdownPolicy, nodes);
 			}
 		}
@@ -172,18 +201,23 @@ public class Campaign extends IgniteEntity {
 
 	/**
 	 * 终止流程
-	 * @param userId
+	 * @param tenantId
+	 * @param userId 
 	 * @param userName
-	 * @param token
+	 * @param shutdownOption 
 	 */
-	public void terminate(long tenantId, long userId, String userName, String token) {
-		List<CampaignNode> nodes = diagram.parseNodes(tenantId, token);
+	public void terminate(long tenantId, long userId, String userName, int shutdownOption) {
+		if (tenantId != this.tenantId) {
+			// TODO
+		}
+		List<CampaignNode> nodes = diagram.parseNodes(this.tenantId);
 		// 取消固化标签
 		if (releaseCuringTags(nodes)) {
 			this.status = CampaignStatus.DONE;
 			this.updateAt = new Date();
 			this.updateBy = userId;
 			this.terminateOperation = new CampaignOperation(this.updateAt, userId, userName);
+			this.shutdownPolicy.updateBy(shutdownOption);
 		}
 	}
 
@@ -253,6 +287,10 @@ public class Campaign extends IgniteEntity {
 		if (null != this.updateBy) {
 			map.put("updateBy", this.updateBy);
 		}
+		if (null != this.createOperation) {
+			this.createOperation.putOperationTime(map, "createTime");
+			this.createOperation.putOperatorName(map, "creator");
+		}
 		if (null != this.modifyOperation) {
 			this.modifyOperation.putOperationTime(map, "modifyTime");
 			this.modifyOperation.putOperatorName(map, "modifier");
@@ -273,11 +311,17 @@ public class Campaign extends IgniteEntity {
 			this.terminateOperation.putOperationTime(map, "terminateTime");
 			this.terminateOperation.putOperatorName(map, "terminator");
 		}
-		map.put("bizTimeFlag", this.bizTimeFlag);
-		this.bizDateRange.putStartTime(map, "bizStartTime");
-		this.bizDateRange.putEndTime(map, "bizEndTime");
-		this.startupPolicy.putTime(map, "startupTime");
-		this.shutdownPolicy.putTime(map, "shutdownTime");
+		map.put("bizDateFlag", this.bizDateFlag);
+		if (null != this.bizDateRange) {
+			this.bizDateRange.putStart(map, "bizStartDate");
+			this.bizDateRange.putEnd(map, "bizEndDate");
+		}
+		if (null != this.startupPolicy) {
+			this.startupPolicy.putTime(map, "startupTime");
+		}
+		if (null != this.shutdownPolicy) {
+			this.shutdownPolicy.putTime(map, "shutdownTime");
+		}
 		String json = GsonUtils.create().toJson(map);
 		return GsonUtils.create().fromJson(json, outType);
 	}
@@ -303,6 +347,10 @@ public class Campaign extends IgniteEntity {
 		if (null != this.diagram) {
 			map.put("diagramJson", GsonUtils.create().toJson(this.diagram));
 		}
+		if (null != this.createOperation) {
+			this.createOperation.putOperationTime(map, "createTime");
+			this.createOperation.putOperatorName(map, "creator");
+		}
 		if (null != this.modifyOperation) {
 			this.modifyOperation.putOperationTime(map, "modifyTime");
 			this.modifyOperation.putOperatorName(map, "modifier");
@@ -323,14 +371,20 @@ public class Campaign extends IgniteEntity {
 			this.terminateOperation.putOperationTime(map, "terminateTime");
 			this.terminateOperation.putOperatorName(map, "terminator");
 		}
-		map.put("bizTimeFlag", this.bizTimeFlag);
-		this.bizDateRange.putStartTime(map, "bizStartTime");
-		this.bizDateRange.putEndTime(map, "bizEndTime");
-		this.startupPolicy.putTime(map, "startupTime");
-		this.startupPolicy.putMode(map, "startupMode");
-		this.shutdownPolicy.putTime(map, "shutdownTime");
-		this.shutdownPolicy.putMode(map, "shutdownMode");
-		this.shutdownPolicy.putOption(map, "shutdownOption");
+		map.put("bizDateFlag", this.bizDateFlag);
+		if (null != this.bizDateRange) {
+			this.bizDateRange.putStart(map, "bizStartDate");
+			this.bizDateRange.putEnd(map, "bizEndDate");
+		}
+		if (null != this.startupPolicy) {
+			this.startupPolicy.putTime(map, "startupTime");
+			this.startupPolicy.putMode(map, "startupMode");
+		}
+		if (null != this.shutdownPolicy) {
+			this.shutdownPolicy.putTime(map, "shutdownTime");
+			this.shutdownPolicy.putMode(map, "shutdownMode");
+			this.shutdownPolicy.putOption(map, "shutdownOption");
+		}
 		String json = GsonUtils.create().toJson(map);
 		return GsonUtils.create().fromJson(json, outType);
 	}

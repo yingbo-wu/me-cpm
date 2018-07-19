@@ -1,5 +1,7 @@
 package cn.rongcapital.mc2.me.cpm.api.dto;
 
+import java.util.Date;
+
 import cn.rongcapital.mc2.me.commons.api.ApiOut;
 
 public class ComponentFindOut implements ApiOut {
@@ -40,7 +42,7 @@ public class ComponentFindOut implements ApiOut {
 
 	private String resourceCode;
 
-	private Long updateAt;
+	private Date updateAt;
 
 	public String getId() {
 		return id;
@@ -186,11 +188,11 @@ public class ComponentFindOut implements ApiOut {
 		this.resourceCode = resourceCode;
 	}
 
-	public Long getUpdateAt() {
+	public Date getUpdateAt() {
 		return updateAt;
 	}
 
-	public void setUpdateAt(Long updateAt) {
+	public void setUpdateAt(Date updateAt) {
 		this.updateAt = updateAt;
 	}
 

@@ -2,17 +2,16 @@ package cn.rongcapital.mc2.me.cpm.api.dto;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import cn.rongcapital.mc2.me.commons.api.ApiIn;
 
-public class CampaignDiagramSaveIn implements ApiIn {
+public class CampaignFlowShutdownIn implements ApiIn {
 
-	@NotBlank(message = "4001")
+	@NotEmpty(message = "4001")
 	private String id;
 
-	@NotBlank(message = "4002")
-	private String diagramJson;
+	private Integer shutdownOption;
 
 	@NotNull(message = "4401")
 	private Long tenantId;
@@ -20,8 +19,15 @@ public class CampaignDiagramSaveIn implements ApiIn {
 	@NotNull(message = "4402")
 	private Long userId;
 
-	@NotNull(message = "4403")
+	@NotEmpty(message = "4403")
 	private String userName;
+
+	public CampaignFlowShutdownIn() {}
+
+	public CampaignFlowShutdownIn(String id, Integer shutdownOption) {
+		this.id = id;
+		this.shutdownOption = shutdownOption;
+	}
 
 	public String getId() {
 		return id;
@@ -31,12 +37,12 @@ public class CampaignDiagramSaveIn implements ApiIn {
 		this.id = id;
 	}
 
-	public String getDiagramJson() {
-		return diagramJson;
+	public int getShutdownOption() {
+		return shutdownOption;
 	}
 
-	public void setDiagramJson(String diagramJson) {
-		this.diagramJson = diagramJson;
+	public void setShutdownOption(int shutdownOption) {
+		this.shutdownOption = shutdownOption;
 	}
 
 	public Long getTenantId() {

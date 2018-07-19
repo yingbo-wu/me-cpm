@@ -3,51 +3,58 @@ package cn.rongcapital.mc2.me.cpm.domain.model;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import cn.rongcapital.mc2.me.cpm.domain.FieldName;
 
 public class CampaignBizDateRange {
 
-	@Field(FieldName.FIELD_SATRT_TIME)
-	private Date startTime;
+	@QuerySqlField
+	@Field(FieldName.FIELD_SATRT)
+	private Date start;
 
-	@Field(FieldName.FIELD_END_TIME)
-	private Date endTime;
+	@QuerySqlField
+	@Field(FieldName.FIELD_END)
+	private Date end;
 
 	public CampaignBizDateRange() {}
 
-	public CampaignBizDateRange(Date startTime, Date endTime) {
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-
-	public Date lookupStartTime() {
-		return startTime;
-	}
-
-	public Date lookupEndTime() {
-		return endTime;
-	}
-
-	public void putStartTime(Map<String, Object> map, String key) {
-		if (null != this.startTime) {
-			map.put(key, this.startTime);
+	public CampaignBizDateRange(Long start, Long end) {
+		if (null != start) {
+			this.start = new Date(start);
+		}
+		if (null != end) {
+			this.end = new Date(end);
 		}
 	}
 
-	public void putEndTime(Map<String, Object> map, String key) {
-		if (null != this.endTime) {
-			map.put(key, this.endTime);
+	public Date lookupStart() {
+		return this.start;
+	}
+
+	public Date lookupEnd() {
+		return this.end;
+	}
+
+	public void putStart(Map<String, Object> map, String key) {
+		if (null != this.start) {
+			map.put(key, this.start);
 		}
 	}
 
-	public void resetStartTime(Date startTime) {
-		this.startTime = startTime;
+	public void putEnd(Map<String, Object> map, String key) {
+		if (null != this.end) {
+			map.put(key, this.end);
+		}
 	}
 
-	public void resetEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void resetStart(Long start) {
+		this.start = new Date(start);
+	}
+
+	public void resetEnd(Long end) {
+		this.end = new Date(end);
 	}
 
 }

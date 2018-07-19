@@ -1,6 +1,5 @@
 package cn.rongcapital.mc2.me.cpm.domain.service;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +28,13 @@ public class CampaignCreateService {
 	 * @param userName
 	 * @param name
 	 * @param description
-	 * @param bizTimeFlag
-	 * @param bizStartTime
-	 * @param bizEndTime
+	 * @param bizDateFlag
+	 * @param bizStartDate
+	 * @param bizEndDate
 	 * @return
 	 */
-	public String create(long tenantId, long userId, String userName, String name, String description, int bizTimeFlag, Date bizStartTime, Date bizEndTime) {
-		Campaign campaign = new Campaign(tenantId, userId, userName, name, description, bizTimeFlag, bizStartTime, bizEndTime);
+	public String create(long tenantId, long userId, String userName, String name, String description, int bizDateFlag, Long bizStartDate, Long bizEndDate) {
+		Campaign campaign = new Campaign(tenantId, userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate);
 		campaignRepository.save(campaign);
 		return campaign.getId();
 	}
@@ -47,18 +46,18 @@ public class CampaignCreateService {
 	 * @param userName
 	 * @param name
 	 * @param description
-	 * @param bizTimeFlag
-	 * @param bizStartTime
-	 * @param bizEndTime
+	 * @param bizDateFlag
+	 * @param bizStartDate
+	 * @param bizEndDate
 	 * @param dataJson
 	 * @return
 	 */
-	public String create(long tenantId, long userId, String userName, String name, String description, int bizTimeFlag, Date bizStartTime, Date bizEndTime, String dataJson) {
+	public String create(long tenantId, long userId, String userName, String name, String description, int bizDateFlag, Long bizStartDate, Long bizEndDate, String dataJson) {
 		ComponentInfo componentInfo = componentInfoRepository.findOneByCategory(CampaignNodeCategory.AUDIENCE.name());
 		String componentId = componentInfo.getId();
 		CampaignWebNode node = new CampaignWebNode(componentId, dataJson);
 		Map<String, Object> map = node.toMap();
-		Campaign campaign = new Campaign(tenantId, userId, userName, name, description, bizTimeFlag, bizStartTime, bizEndTime, map);
+		Campaign campaign = new Campaign(tenantId, userId, userName, name, description, bizDateFlag, bizStartDate, bizEndDate, map);
 		campaignRepository.save(campaign);
 		return campaign.getId();
 	}
